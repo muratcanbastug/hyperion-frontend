@@ -23,6 +23,8 @@ import Body from "../components/body";
 import { Colors } from "../components/styles";
 const { primary } = Colors;
 
+import DummyData from "../components/dummyData.json"; // just for testing purposes
+
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   BottomSheetModal,
@@ -30,151 +32,23 @@ import {
 } from "@gorhom/bottom-sheet";
 
 const HomeScreen = () => {
-  // Dummy data for test
-  const level = {
-    newest: 1,
-    recent: 2,
-    oldest: 3,
-  };
+  const muscles = DummyData.user[0].muscle; // Dummy data for test
 
   const bodyPart = {
-    abdominals: level.oldest,
-    traps: level.newest,
-    chest: level.newest,
-    shoulders: level.oldest,
-    biceps: level.oldest,
-    forearms: level.oldest,
-    triceps: level.recent,
-    obliques: level.recent,
-    lats: level.oldest,
-    lower_back: level.oldest,
-    glutes: level.oldest,
-    hamsterings: level.newest,
-    calves: level.oldest,
-    quads: level.oldest,
-  };
-
-  const egzersizeHistory = {
-    day1: {
-      history: 1,
-      egzersizes: {
-        egzersize1: {
-          egzersizeId: 173,
-          sets: {
-            set1: {
-              repetitions: 12,
-              weight: 30,
-            },
-            set2: {
-              repetitions: 10,
-              weight: 35,
-            },
-            set3: {
-              repetitions: 8,
-              weight: 40,
-            },
-          },
-        },
-        egzersize2: {
-          egzersizeId: 175,
-          sets: {
-            set1: {
-              repetitions: 12,
-              weight: 30,
-            },
-            set2: {
-              repetitions: 10,
-              weight: 35,
-            },
-            set3: {
-              repetitions: 8,
-              weight: 40,
-            },
-            set4: {
-              repetitions: 8,
-              weight: 40,
-            },
-          },
-        },
-        egzersize3: {
-          egzersizeId: 173,
-          sets: {
-            set1: {
-              repetitions: 12,
-              weight: 30,
-            },
-            set2: {
-              repetitions: 10,
-              weight: 35,
-            },
-            set3: {
-              repetitions: 8,
-              weight: 40,
-            },
-          },
-        },
-      },
-    },
-    day2: {
-      history: 7,
-      egzersizes: {
-        egzersize1: {
-          egzersizeId: 173,
-          sets: {
-            set1: {
-              repetitions: 12,
-              weight: 30,
-            },
-            set2: {
-              repetitions: 10,
-              weight: 35,
-            },
-            set3: {
-              repetitions: 8,
-              weight: 40,
-            },
-          },
-        },
-        egzersize2: {
-          egzersizeId: 175,
-          sets: {
-            set1: {
-              repetitions: 12,
-              weight: 30,
-            },
-            set2: {
-              repetitions: 10,
-              weight: 35,
-            },
-            set3: {
-              repetitions: 8,
-              weight: 40,
-            },
-            set4: {
-              repetitions: 8,
-              weight: 40,
-            },
-          },
-        },
-        egzersize3: {
-          egzersizeId: 173,
-          sets: {
-            set1: {
-              repetitions: 12,
-              weight: 30,
-            },
-            set2: {
-              repetitions: 10,
-              weight: 35,
-            },
-            set3: {
-              repetitions: 8,
-              weight: 40,
-            },
-          },
-        },
-      },
-    },
+    abdominals: muscles.abdominals.muscleLevel,
+    traps: muscle.traps.muscleLevel,
+    chest: muscle.chest.muscleLevel,
+    shoulders: muscle.shoulders.muscleLevel,
+    biceps: muscle.biceps.muscleLeve,
+    forearms: muscle.forearms.muscleLeve,
+    triceps: muscle.triceps.muscleLeve,
+    obliques: muscle.obliques.muscleLeve,
+    lats: muscle.lats.muscleLeve,
+    lower_back: muscle.lower_back.muscleLeve,
+    glutes: muscle.glutes.muscleLeve,
+    hamsterings: muscle.hamsterings.muscleLeve,
+    calves: muscle.calves.muscleLeve,
+    quads: muscle.quads.muscleLeve,
   };
 
   const BottomSheetModalRef = useRef(null);
@@ -194,13 +68,16 @@ const HomeScreen = () => {
   };
 
   const bottomSheetContainer = (muscle) => {
-    let labels = [1, 5, 8, 9, 10, 11, 12, 13, 14, 15];
-    let quantitiy = [10, 10, 70, 12, 18, 21, 22, 24, 28, 29];
-    let intensity = [23, 25, 13, 18, 58, 6, 7, 8, 11, 48];
+    let labels = muscles.muscle.egzersizeHistory.map((egzersize) =>
+      Date(egzersize.history).getDate()
+    );
+    let quantitiy = muscles.muscle.egzersizeHistory.map(
+      (egzersize) => egzersize.quantitiy
+    );
+    let intensity = muscles.muscle.egzersizeHistory.map(
+      (egzersize) => egzersize.intensity
+    );
 
-    // for (let day in egzersizeHistory) {
-    //   labels.push(egzersizeHistory[day].history);
-    // }
     return (
       <View style={styles.bottomSheetContainer}>
         <Chart
@@ -232,7 +109,6 @@ const HomeScreen = () => {
               height={350}
               top={0}
               BodyPart={bodyPart}
-              Level={level}
               setmuscle={setmuscle}
             />
           </View>

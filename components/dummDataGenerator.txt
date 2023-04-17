@@ -1,0 +1,72 @@
+{
+    egzersize: [
+	'{{repeat(12)}}',
+      {
+        _id: '{{objectId()}}',
+        egzersizeName: '{{lorem(2, "words")}}',
+        description: '{{lorem(30, "words")}}',
+        picture:'http://placehold.it/32x32',
+        reletedMuscles: [
+		'{{repeat(2,4)}}',
+          {
+            muscleId: '{{objectId()}}'
+          }
+        ]
+      }
+    ],
+    muscle: [
+	'{{repeat(14)}}',
+      {
+        _id: '{{objectId()}}',
+        musleName: '{{lorem(2, "words")}}',
+        related_egzersize: [
+		'{{repeat(2,4)}}',
+          {
+            egzersizeId: '{{objectId()}}'
+          }
+        ]
+      }
+    ],
+    user: [
+	'{{repeat(3)}}',
+      {
+        _id: '{{objectId()}}',
+        userName: '{{firstName()}}',
+        email: '{{email()}}',
+        password: '{{lorem(50, "charachters")}}',
+        verified: '{{bool()}}',
+        muscle: [
+          '{{repeat(14)}}',
+			{
+            biceps: {
+              muscleId: '{{objectId()}}',
+              muslceLevel: '{{random(1,2,3)}}',
+              egzersizeHistory: [
+			'{{repeat(0, 30)}}',
+                {
+                  history: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ssZ")}}',
+                  intensity: '{{floating(0, 90)}}',
+                  quantity: '{{floating(0, 90)}}',
+                  egzersizes: [
+				'{{repeat(0, 12)}}',
+                    {
+                      egzersizeId: '{{objectId()}}',
+                      egzersizeName: '{{lorem(2, "words")}}',
+                      sets: [
+					'{{repeat(1, 4)}}',
+                        {
+                          repetition: '{{integer(5, 14)}}',
+                          weight: '{{integer(1, 200)}}'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+
