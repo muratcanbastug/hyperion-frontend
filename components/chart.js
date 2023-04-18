@@ -2,13 +2,25 @@ import React from "react";
 import { BarChart, LineChart } from "react-native-chart-kit";
 import { Dimensions, View, Text, StyleSheet } from "react-native";
 
-const Chart = ({ muscleName, labels, intensity, quantitiy }) => {
+const Chart = ({
+  muscleName,
+  labels,
+  intensity,
+  quantity,
+  setEgzersizeHistoryVisible,
+  setEgzersizeDayIndex,
+}) => {
   muscleName = muscleName.charAt(0).toUpperCase() + muscleName.slice(1);
 
-  const handle = ({ value, getColor, index }) => {
-    getColor() && "purple"
-      ? console.log("quantitiy", labels[index], value)
-      : console.log("intensity", labels[index], value);
+  // const handle = ({ value, getColor, index }) => {
+  //   getColor() && "purple"
+  //     ? console.log("quantity", labels[index], value)
+  //     : console.log("intensity", labels[index], value);
+  // };
+
+  const handle = ({ index }) => {
+    setEgzersizeHistoryVisible(true);
+    setEgzersizeDayIndex(index);
   };
 
   return (
@@ -19,7 +31,7 @@ const Chart = ({ muscleName, labels, intensity, quantitiy }) => {
           labels: labels,
           datasets: [
             {
-              data: quantitiy,
+              data: quantity,
               color: () => "purple",
             },
             {

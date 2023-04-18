@@ -25,106 +25,189 @@ const { primary } = Colors;
 
 import DummyData from "../components/dummyData.json"; // just for testing purposes
 
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
+  GestureHandlerRootView,
+  ScrollView,
+} from "react-native-gesture-handler";
+import BottomSheet, {
   BottomSheetModal,
   BottomSheetModalProvider,
+  BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 
 const HomeScreen = () => {
   const muscles = DummyData.user[0].muscle; // Dummy data for test
 
   const bodyPart = {
-    abdominals: muscles.abdominals.muscleLevel,
-    traps: muscle.traps.muscleLevel,
-    chest: muscle.chest.muscleLevel,
-    shoulders: muscle.shoulders.muscleLevel,
-    biceps: muscle.biceps.muscleLeve,
-    forearms: muscle.forearms.muscleLeve,
-    triceps: muscle.triceps.muscleLeve,
-    obliques: muscle.obliques.muscleLeve,
-    lats: muscle.lats.muscleLeve,
-    lower_back: muscle.lower_back.muscleLeve,
-    glutes: muscle.glutes.muscleLeve,
-    hamsterings: muscle.hamsterings.muscleLeve,
-    calves: muscle.calves.muscleLeve,
-    quads: muscle.quads.muscleLeve,
+    abdominals: muscles[0].muscleLevel,
+    traps: muscles[1].muscleLevel,
+    chest: muscles[2].muscleLevel,
+    shoulders: muscles[3].muscleLevel,
+    biceps: muscles[4].muscleLevel,
+    forearms: muscles[5].muscleLevel,
+    triceps: muscles[6].muscleLevel,
+    obliques: muscles[7].muscleLevel,
+    lats: muscles[8].muscleLevel,
+    lower_back: muscles[9].muscleLevel,
+    glutes: muscles[10].muscleLevel,
+    hamsterings: muscles[11].muscleLevel,
+    calves: muscles[12].muscleLevel,
+    quads: muscles[13].muscleLevel,
   };
 
-  const BottomSheetModalRef = useRef(null);
+  const BottomSheetRef = useRef(null);
   const snapPoints = ["50%"];
-  const [muscle, setmuscle] = useState("");
+  const [muscle, setmuscle] = useState(null);
+  const [egzersizeHistoryVisible, setEgzersizeHistoryVisible] = useState(null);
+  const [EgzersizeDayIndex, setEgzersizeDayIndex] = useState(null);
 
   useEffect(() => {
-    if (muscle) handlePresentModal();
+    if (muscle !== null) handlePresentModal();
   }, [muscle]);
 
   const handlePresentModal = () => {
-    BottomSheetModalRef.current?.present();
+    BottomSheetRef.current?.snapToIndex(0);
   };
 
   const handleSheetChanges = (index) => {
-    if (index === -1) setmuscle("");
+    if (index === -1) {
+      setmuscle(null);
+      setEgzersizeHistoryVisible(null);
+    }
   };
 
   const bottomSheetContainer = (muscle) => {
-    let labels = muscles.muscle.egzersizeHistory.map((egzersize) =>
-      Date(egzersize.history).getDate()
-    );
-    let quantitiy = muscles.muscle.egzersizeHistory.map(
-      (egzersize) => egzersize.quantitiy
-    );
-    let intensity = muscles.muscle.egzersizeHistory.map(
-      (egzersize) => egzersize.intensity
-    );
-
-    return (
-      <View style={styles.bottomSheetContainer}>
-        <Chart
-          muscleName={muscle}
-          labels={labels}
-          quantitiy={quantitiy}
-          intensity={intensity}
-        />
-        <View style={styles.egzersize}>
-          <Text style={styles.egzersizeTitle}>Triceps PushDown:</Text>
-          <Text style={styles.egzersizeDetail}>
-            <Text style={{ fontWeight: 600 }}>Set 1: Reps:</Text> 12
-            <Text style={{ fontWeight: 500 }}> Weight: </Text>
-            30kg
-          </Text>
+    if (muscle !== null) {
+      let labels = muscles[muscle].egzersizeHistory.map((egzersize) => {
+        let l = new Date(egzersize.history);
+        return l.getDate();
+      });
+      let quantity = muscles[muscle].egzersizeHistory.map(
+        (egzersize) => egzersize.quantity
+      );
+      let intensity = muscles[muscle].egzersizeHistory.map(
+        (egzersize) => egzersize.intensity
+      );
+      let muscleLevel = muscles[muscle].muscleLevel;
+      let muscleName = muscles[muscle].muscleName;
+      let egzersizeHistory = "";
+      if (egzersizeHistoryVisible) {
+        egzersizeHistory = new Date(
+          muscles[muscle].egzersizeHistory[EgzersizeDayIndex].history
+        );
+      }
+      return (
+        <View style={styles.bottomSheetContainer}>
+          <Chart
+            muscleName={muscles[muscle].muscleName}
+            labels={labels}
+            quantity={quantity}
+            intensity={intensity}
+            setEgzersizeHistoryVisible={setEgzersizeHistoryVisible}
+            setEgzersizeDayIndex={setEgzersizeDayIndex}
+          />
+          {muscleLevel === 3 && (
+            <Text style={styles.textContainer}>
+              You seem to be working your{" "}
+              <Text style={{ fontWeight: "bold" }}>{muscleName}</Text> these
+              days. You can focus on other muscle areas. {"\n"}Tap a point on
+              the chart to view the exercise history.
+            </Text>
+          )}
+          {muscleLevel === 2 && (
+            <Text style={styles.textContainer}>
+              You seem to be working your{" "}
+              <Text style={{ fontWeight: "bold" }}>{muscleName}</Text> these
+              days.{"\n"}Tap a point on the chart to view the exercise history.
+            </Text>
+          )}
+          {muscleLevel === 1 && (
+            <Text style={styles.textContainer}>
+              You look like you haven't worked your biceps these days.{" "}
+              <Text style={{ fontWeight: "bold" }}>{muscleName}</Text> these
+              days. For a good body, you should keep all muscle part red. {"\n"}
+              Tap a point on the chart to view the exercise history.
+            </Text>
+          )}
+          {egzersizeHistoryVisible && (
+            <View>
+              <Text style={{ fontWeight: "bold", fontSize: 22 }}>
+                {" "}
+                Egzersizes on {egzersizeHistory.getDate()}{" "}
+                {egzersizeHistory.toLocaleString("en-EN", { month: "long" })}:
+              </Text>
+              <ExerciseComponent
+                exercises={
+                  muscles[muscle].egzersizeHistory[EgzersizeDayIndex].egzersizes
+                }
+              />
+            </View>
+          )}
         </View>
-      </View>
-    );
+      );
+    }
   };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomSheetModalProvider>
-        <View style={styles.container}>
-          <StatusBar style="dark" />
-          <View style={styles.innerAreaTop}>
-            <Body
-              width={350}
-              height={350}
-              top={0}
-              BodyPart={bodyPart}
-              setmuscle={setmuscle}
-            />
-          </View>
-          <View style={styles.innerAreaBottom}></View>
+      <View style={styles.container}>
+        <StatusBar style="dark" />
+        <View style={styles.innerAreaTop}>
+          <Body
+            width={350}
+            height={350}
+            top={0}
+            BodyPart={bodyPart}
+            setmuscle={setmuscle}
+            setEgzersizeHistoryVisible={setEgzersizeHistoryVisible}
+          />
+          <Text
+            style={{
+              alignItems: "flex-start",
+              width: Dimensions.get("window").width * 0.95,
+            }}
+          >
+            Tap a muscle group to see exercise history
+          </Text>
         </View>
-        <BottomSheetModal
-          ref={BottomSheetModalRef}
-          index={0}
+        <View style={styles.innerAreaBottom}></View>
+
+        <BottomSheet
+          ref={BottomSheetRef}
+          index={-1}
           snapPoints={snapPoints}
           enablePanDownToClose={true}
           onChange={handleSheetChanges}
         >
-          {bottomSheetContainer(muscle)}
-        </BottomSheetModal>
-      </BottomSheetModalProvider>
+          <BottomSheetScrollView
+            contentContainerStyle={styles.contentContainer}
+          >
+            {bottomSheetContainer(muscle)}
+          </BottomSheetScrollView>
+        </BottomSheet>
+      </View>
     </GestureHandlerRootView>
+  );
+};
+
+const ExerciseComponent = ({ exercises }) => {
+  return (
+    <View>
+      {exercises.map((exercise, index) => (
+        <View style={styles.egzersizeCard} key={index}>
+          <Text style={styles.egzersizeTitle}>{exercise.egzersizeName}</Text>
+          {exercise.sets.map((set, setIndex) => (
+            <View key={setIndex} style={styles.egzersizeDetail}>
+              <Text style={{ fontWeight: "500", fontSize: 18 }}>
+                Set {setIndex + 1}:
+              </Text>
+              <Text style={{ fontSize: 16 }}>Repetition: {set.repetition}</Text>
+              <Text style={{ fontSize: 16 }}>Weight: {set.weight}</Text>
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
   );
 };
 
@@ -149,20 +232,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 8,
   },
-  egzersize: {
+  egzersizeCard: {
     alignItems: "flex-start",
     borderRadius: 16,
     width: Dimensions.get("window").width * 0.95,
-    marginVertical: 20,
+    marginVertical: 4,
     backgroundColor: "#F7EBEB",
-    padding: 15,
+    padding: 10,
   },
   egzersizeTitle: {
     fontWeight: "bold",
-    fontSize: 22,
+    fontSize: 20,
   },
   egzersizeDetail: {
-    fontSize: 16,
+    fontSize: 18,
+    marginVertical: 4,
+  },
+  textContainer: {
+    width: Dimensions.get("window").width * 0.95,
+    marginVertical: 10,
+    padding: 8,
+    backgroundColor: "#F7EBEB",
+    borderRadius: 10,
+    fontSize: 15,
   },
 });
 export default HomeScreen;

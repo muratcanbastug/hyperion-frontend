@@ -18,7 +18,7 @@
 	'{{repeat(14)}}',
       {
         _id: '{{objectId()}}',
-        musleName: '{{lorem(2, "words")}}',
+        muscleName: '{{lorem(2, "words")}}',
         related_egzersize: [
 		'{{repeat(2,4)}}',
           {
@@ -36,34 +36,33 @@
         password: '{{lorem(50, "charachters")}}',
         verified: '{{bool()}}',
         muscle: [
-          '{{repeat(14)}}',
-			{
-            biceps: {
-              muscleId: '{{objectId()}}',
-              muslceLevel: '{{random(1,2,3)}}',
-              egzersizeHistory: [
-			'{{repeat(0, 30)}}',
-                {
-                  history: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ssZ")}}',
-                  intensity: '{{floating(0, 90)}}',
-                  quantity: '{{floating(0, 90)}}',
-                  egzersizes: [
-				'{{repeat(0, 12)}}',
-                    {
-                      egzersizeId: '{{objectId()}}',
-                      egzersizeName: '{{lorem(2, "words")}}',
-                      sets: [
-					'{{repeat(1, 4)}}',
-                        {
-                          repetition: '{{integer(5, 14)}}',
-                          weight: '{{integer(1, 200)}}'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
+        '{{repeat(14)}}',
+          {
+            muscleName: '{{lorem(2, "words")}}',
+            muscleId: '{{objectId()}}',
+            muscleLevel: '{{random(1,2,3)}}',
+            egzersizeHistory: [
+            '{{repeat(0, 30)}}',
+              {
+                history: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ssZ")}}',
+                intensity: '{{floating(0, 90)}}',
+                quantity: '{{floating(0, 90)}}',
+                egzersizes: [
+                '{{repeat(1, 12)}}',
+                  {
+                    egzersizeId: '{{objectId()}}',
+                    egzersizeName: '{{lorem(2, "words")}}',
+                    sets: [
+                    '{{repeat(1, 4)}}',
+                      {
+                        repetition: '{{integer(5, 14)}}',
+                        weight: '{{integer(1, 200)}}'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
