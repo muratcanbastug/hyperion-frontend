@@ -35,6 +35,26 @@
         email: '{{email()}}',
         password: '{{lorem(50, "charachters")}}',
         verified: '{{bool()}}',
+        programs: [
+          '{{repeat(0,7)}}',
+          {
+            programName: '{{lorem(2, "words")}}',
+            egzersizes: [
+            '{{repeat(4, 10)}}',
+              {
+                egzersizeId: '{{objectId()}}',
+                egzersizeName: '{{lorem(2, "words")}}',
+                sets: [
+                    '{{repeat(1, 4)}}',
+                      {
+                        repetition: '{{integer(5, 14)}}',
+                        weight: '{{integer(1, 200)}}'
+                      }
+                    ]
+              }
+            ]
+          }
+        ],
         muscle: [
         '{{repeat(14)}}',
           {

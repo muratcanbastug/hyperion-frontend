@@ -11,7 +11,7 @@ import Home from "./../screens/Home";
 import Verification from "./../screens/OtpVerification";
 import PasswordResetRequest from "./../screens/PasswordResetRequest";
 import ResetPassword from "./../screens/ResetPassword";
-import HomeScreen from "./../screens/HomeScreen";
+import ProgramDetails from "./../screens/ProgramDetails";
 
 import { Colors } from "../components/styles";
 
@@ -35,7 +35,7 @@ const RootStack = () => {
               headerTitle: "",
               contentStyle: { backgroundColor: "#fff" },
             }}
-            initialRouteName="HomeScreen" // default: "Authentication"
+            initialRouteName="Authentication" // default: "Authentication"
           >
             {storedCredentials ? (
               <Stack.Screen name="Home" component={Home} />
@@ -53,7 +53,11 @@ const RootStack = () => {
                   component={PasswordResetRequest}
                 />
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen
+                  name="ProgramDetails"
+                  component={ProgramDetails}
+                />
               </>
             )}
           </Stack.Navigator>
