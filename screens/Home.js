@@ -31,6 +31,32 @@ const Home = ({ navigation }) => {
   const { userName, email } = storedCredentials;
   console.log(userName, email);
 
+  const cleareLogin = () => {
+    AsyncStorage.removeItem("Hyperion/LoginCredentials")
+      .then(() => {
+        setStoredCredentials("");
+      })
+      .catch((err) => console.log(err));
+  };
+  //   <TouchableOpacity style={styles.logout} onPress={cleareLogin}>
+  //   <Text style={styles.buttonText}>Logout</Text>
+  // </TouchableOpacity>
+
+  // logout: {
+  //   backgroundColor: secondary,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   borderRadius: 10,
+  //   marginVertical: 5,
+  //   height: 50,
+  //   marginVertical: 10,
+  // },
+  // buttonText: {
+  //   color: primary,
+  //   fontSize: 20,
+  //   marginLeft: 15,
+  // },
+
   const muscles = DummyData.user[0].muscle; // Dummy data for test
   const programs = DummyData.user[2].programs; // Dummy data for test
 
