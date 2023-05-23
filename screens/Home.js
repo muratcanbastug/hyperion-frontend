@@ -237,38 +237,41 @@ const ExerciseComponent = ({ exercises }) => {
 };
 
 const Program = ({ programs, navigation }) => {
-  const handleProgramClick = (egzersizes) => {
-    console.log(egzersizes);
-    // navigation.navigate("ProgramDetails", { egzersizes });
+  const handleProgramClick = (program) => {
+    navigation.navigate("ProgramDetails", { program });
   };
 
-  return programs.map((program, index) => (
-    <TouchableOpacity
-      style={{
-        width: "100%",
-        borderRadius: 5,
-        height: 60,
-        marginVertical: 7,
-        padding: 15,
-        backgroundColor: "black",
-        alignItems: "center",
-        flexDirection: "row",
-      }}
-      key={index}
-      onPress={handleProgramClick(program.egzersizes)}
-    >
-      <Text style={{ color: "white", fontSize: 20 }}>
-        {program.programName}
-      </Text>
-      <View style={styles.rightIcon}>
-        <Ionicons
-          name={"arrow-forward-circle-outline"}
-          size={30}
-          color={primary}
-        />
-      </View>
-    </TouchableOpacity>
-  ));
+  return (
+    <React.Fragment>
+      {programs.map((program, index) => (
+        <TouchableOpacity
+          style={{
+            width: "100%",
+            borderRadius: 5,
+            height: 60,
+            marginVertical: 7,
+            padding: 15,
+            backgroundColor: "black",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+          key={index}
+          onPress={() => handleProgramClick(program)}
+        >
+          <Text style={{ color: "white", fontSize: 20 }}>
+            {program.programName}
+          </Text>
+          <View style={styles.rightIcon}>
+            <Ionicons
+              name={"arrow-forward-circle-outline"}
+              size={30}
+              color={primary}
+            />
+          </View>
+        </TouchableOpacity>
+      ))}
+    </React.Fragment>
+  );
 };
 const styles = StyleSheet.create({
   container: {

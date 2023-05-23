@@ -35,10 +35,16 @@ const RootStack = () => {
               headerTitle: "",
               contentStyle: { backgroundColor: "#fff" },
             }}
-            initialRouteName="Authentication" // default: "Authentication"
+            initialRouteName="Authentication"
           >
             {storedCredentials ? (
-              <Stack.Screen name="Home" component={Home} />
+              <>
+                <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen
+                  name="ProgramDetails"
+                  component={ProgramDetails}
+                />
+              </>
             ) : (
               <>
                 <Stack.Screen
